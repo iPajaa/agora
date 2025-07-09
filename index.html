@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Download Loader</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0e0e0e;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background-color: #161616;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      width: 400px;
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #333;
+      background-color: #1e1e1e;
+      color: white;
+      cursor: pointer;
+      border-radius: 6px;
+      text-align: center;
+      transition: background 0.2s ease;
+      font-size: 14px;
+    }
+
+    .tab-btn.active {
+      background-color: #2e2e2e;
+    }
+
+    .info-box {
+      font-size: 13px;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .info-box.stable {
+      background-color: #0f2c18;
+      color: #4ee07a;
+    }
+
+    .info-box.nightly {
+      background-color: #2e0d3d;
+      color: #dcb8ff;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #0f0f0f;
+      color: white;
+      border: 1px solid #333;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .clear-btn,
+    .download-btn {
+      padding: 10px 15px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .clear-btn {
+      background-color: #1f1f1f;
+      color: #aaa;
+    }
+
+    .download-btn {
+      background-color: #333;
+      color: #999;
+    }
+
+    .download-btn.enabled.stable {
+      background-color: #3aa55f;
+      color: white;
+    }
+
+    .download-btn.enabled.nightly {
+      background-color: #9b59b6;
+      color: white;
+    }
+
+    .download-btn:disabled {
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Download Loader</h2>
+    <p>Enter your product key to download the loader</p>
+
+    <div class="tabs">
+      <div class="tab-btn active" id="tabStable">Stable</div>
+      <div class="tab-btn" id="tabNightly">Nightly</div>
+    </div>
+
+    <div class="info-box stable" id="stableInfo">
+      ✅ Stable release build<br>Thoroughly tested and recommended for most users
+    </div>
+    <div class="info-box nightly" id="nightlyInfo">
+      ⚠️ Experimental build with latest features<br>May be less stable than the stable version
+    </div>
+
+    <input type="text" id="productKey" placeholder="Enter your product key" />
+    
+    <div class="buttons">
+      <button class="clear-btn" onclick="clearForm()">Clear</button>
+      <a id="downloadBtn" class="download-btn" disabled>Download</a>
+    </div>
+  </div>
+
+  <script>
+    const tabStable = document.getElementById('tabStable');
+    const tabNightly = document.getElementById('tabNightly');
+    const stableInfo = document.getElementById('stableInfo');
+    const nightlyInfo = document.getElementById('nightlyInfo');
+    const productKey = document.getElementById('productKey');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    let currentTab = 'stable';
+    const validKey = "ABC123"; // Change this to your actual product key
+
+    function switchTab(tab) {
+      currentTab = tab;
+
+      if (tab === 'stable') {
+        tabStable.classList.add('active');
+        tabNightly.classList.remove('active');
+        stableInfo.style.display = 'block';
+        nightlyInfo.style.display = 'none';
+      } else {
+        tabNightly.classList.add('active');
+        tabStable.classList.remove('active');
+        nightlyInfo.style.display = 'block';
+        stableInfo.style.display = 'none';
+      }
+
+      validateKey(); // Revalidate to show correct button style
+    }
+
+    function validateKey() {
+      const enteredKey = productKey.value.trim();
+      const isValid = enteredKey === validKey;
+
+      if (isValid) {
+        downloadBtn.removeAttribute('disabled');
+        downloadBtn.classList.add('enabled');
+        downloadBtn.classList.remove('stable', 'nightly');
+        downloadBtn.classList.add(currentTab);
+        downloadBtn.href = currentTab === 'stable' ? 'stable-loader.zip' : 'nightly-loader.zip';
+        downloadBtn.setAttribute('download', '');
+      } else {
+        downloadBtn.setAttribute('disabled', '');
+        downloadBtn.classList.remove('enabled', 'stable', 'nightly');
+        downloadBtn.removeAttribute('href');
+        downloadBtn.removeAttribute('download');
+      }
+    }
+
+    function clearForm() {
+      productKey.value = "";
+      validateKey();
+    }
+
+    productKey.addEventListener('input', validateKey);
+    tabStable.addEventListener('click', () => switchTab('stable'));
+    tabNightly.addEventListener('click', () => switchTab('nightly'));
+
+    // Initialize
+    switchTab('stable');
+  </script>
+</body>
+</html>
