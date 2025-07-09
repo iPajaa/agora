@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Download Loader</title>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #0e0e0e;
-      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0c0c0c;
+      color: #e0e0e0;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -16,112 +16,119 @@
     }
 
     .card {
-      background-color: #161616;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      background-color: #151515;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
       width: 400px;
+      max-width: 90%;
     }
 
     h2 {
-      margin-top: 0;
+      margin: 0 0 4px;
       font-size: 22px;
+      font-weight: 600;
     }
 
     p {
-      font-size: 14px;
-      color: #999;
+      font-size: 13px;
+      color: #aaa;
       margin-bottom: 20px;
     }
 
     .tabs {
       display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 8px;
+      margin-bottom: 16px;
     }
 
     .tab-btn {
       flex: 1;
-      padding: 10px;
-      border: 1px solid #333;
+      padding: 10px 0;
+      border: none;
+      border-radius: 8px;
       background-color: #1e1e1e;
-      color: white;
-      cursor: pointer;
-      border-radius: 6px;
-      text-align: center;
-      transition: background 0.2s ease;
+      color: #ccc;
       font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s ease;
     }
 
     .tab-btn.active {
-      background-color: #2e2e2e;
+      background-color: #2f2f2f;
+      color: #fff;
+      font-weight: 600;
     }
 
     .info-box {
       font-size: 13px;
-      padding: 10px;
-      border-radius: 6px;
+      padding: 12px;
+      border-radius: 10px;
       margin-bottom: 20px;
+      line-height: 1.4;
       display: none;
     }
 
     .info-box.stable {
-      background-color: #0f2c18;
-      color: #4ee07a;
+      background-color: #102619;
+      color: #a4f4c4;
     }
 
     .info-box.nightly {
-      background-color: #2e0d3d;
-      color: #dcb8ff;
+      background-color: #25112f;
+      color: #e6cfff;
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 10px;
-      background-color: #0f0f0f;
-      color: white;
+      padding: 12px;
+      border-radius: 10px;
+      background-color: #1a1a1a;
+      color: #e0e0e0;
       border: 1px solid #333;
-      border-radius: 6px;
-      margin-bottom: 15px;
+      margin-bottom: 16px;
+      font-size: 14px;
     }
 
     .buttons {
       display: flex;
       justify-content: space-between;
+      gap: 10px;
     }
 
     .clear-btn,
     .download-btn {
-      padding: 10px 15px;
-      border-radius: 6px;
+      flex: 1;
+      padding: 12px;
       border: none;
+      border-radius: 10px;
       font-size: 14px;
       cursor: pointer;
       transition: background 0.2s ease;
+      text-align: center;
     }
 
     .clear-btn {
-      background-color: #1f1f1f;
-      color: #aaa;
+      background-color: #222;
+      color: #999;
     }
 
     .download-btn {
       background-color: #333;
-      color: #999;
+      color: #888;
+      pointer-events: none;
     }
 
     .download-btn.enabled.stable {
-      background-color: #3aa55f;
-      color: white;
+      background-color: #3cb371;
+      color: #fff;
+      pointer-events: auto;
     }
 
     .download-btn.enabled.nightly {
       background-color: #9b59b6;
-      color: white;
-    }
-
-    .download-btn:disabled {
-      cursor: not-allowed;
+      color: #fff;
+      pointer-events: auto;
     }
   </style>
 </head>
@@ -131,70 +138,60 @@
     <p>Enter your product key to download the loader</p>
 
     <div class="tabs">
-      <div class="tab-btn active" id="tabStable">Stable</div>
-      <div class="tab-btn" id="tabNightly">Nightly</div>
+      <button class="tab-btn active" id="tabStable">Stable</button>
+      <button class="tab-btn" id="tabNightly">Nightly</button>
     </div>
 
     <div class="info-box stable" id="stableInfo">
-      ✅ Stable release build<br>Thoroughly tested and recommended for most users
+      ✅ Stable release build<br>Thoroughly tested and recommended for most users.
     </div>
     <div class="info-box nightly" id="nightlyInfo">
-      ⚠️ Experimental build with latest features<br>May be less stable than the stable version
+      ⚠️ Experimental build with latest features.<br>May be less stable than the stable version.
     </div>
 
     <input type="text" id="productKey" placeholder="Enter your product key" />
-    
+
     <div class="buttons">
       <button class="clear-btn" onclick="clearForm()">Clear</button>
-      <a id="downloadBtn" class="download-btn" disabled>Download</a>
+      <a id="downloadBtn" class="download-btn">Download</a>
     </div>
   </div>
 
   <script>
-    const tabStable = document.getElementById('tabStable');
-    const tabNightly = document.getElementById('tabNightly');
-    const stableInfo = document.getElementById('stableInfo');
-    const nightlyInfo = document.getElementById('nightlyInfo');
-    const productKey = document.getElementById('productKey');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const validKey = "AGORA-AU9DB94FHHM-C6IT"; // Change to your actual key
 
-    let currentTab = 'stable';
-    const validKey = "ABC123"; // Change this to your actual product key
+    const tabStable = document.getElementById("tabStable");
+    const tabNightly = document.getElementById("tabNightly");
+    const stableInfo = document.getElementById("stableInfo");
+    const nightlyInfo = document.getElementById("nightlyInfo");
+    const productKey = document.getElementById("productKey");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    let currentTab = "stable";
 
     function switchTab(tab) {
       currentTab = tab;
+      tabStable.classList.toggle("active", tab === "stable");
+      tabNightly.classList.toggle("active", tab === "nightly");
 
-      if (tab === 'stable') {
-        tabStable.classList.add('active');
-        tabNightly.classList.remove('active');
-        stableInfo.style.display = 'block';
-        nightlyInfo.style.display = 'none';
-      } else {
-        tabNightly.classList.add('active');
-        tabStable.classList.remove('active');
-        nightlyInfo.style.display = 'block';
-        stableInfo.style.display = 'none';
-      }
+      stableInfo.style.display = tab === "stable" ? "block" : "none";
+      nightlyInfo.style.display = tab === "nightly" ? "block" : "none";
 
-      validateKey(); // Revalidate to show correct button style
+      validateKey();
     }
 
     function validateKey() {
-      const enteredKey = productKey.value.trim();
-      const isValid = enteredKey === validKey;
+      const entered = productKey.value.trim();
+      const isValid = entered === validKey;
+
+      downloadBtn.classList.remove("enabled", "stable", "nightly");
+      downloadBtn.removeAttribute("href");
+      downloadBtn.removeAttribute("download");
 
       if (isValid) {
-        downloadBtn.removeAttribute('disabled');
-        downloadBtn.classList.add('enabled');
-        downloadBtn.classList.remove('stable', 'nightly');
-        downloadBtn.classList.add(currentTab);
-        downloadBtn.href = currentTab === 'stable' ? 'stable-loader.zip' : 'nightly-loader.zip';
-        downloadBtn.setAttribute('download', '');
-      } else {
-        downloadBtn.setAttribute('disabled', '');
-        downloadBtn.classList.remove('enabled', 'stable', 'nightly');
-        downloadBtn.removeAttribute('href');
-        downloadBtn.removeAttribute('download');
+        downloadBtn.classList.add("enabled", currentTab);
+        downloadBtn.href = currentTab === "stable" ? "stable-loader.zip" : "nightly-loader.zip";
+        downloadBtn.setAttribute("download", "");
       }
     }
 
@@ -203,12 +200,12 @@
       validateKey();
     }
 
-    productKey.addEventListener('input', validateKey);
-    tabStable.addEventListener('click', () => switchTab('stable'));
-    tabNightly.addEventListener('click', () => switchTab('nightly'));
+    tabStable.addEventListener("click", () => switchTab("stable"));
+    tabNightly.addEventListener("click", () => switchTab("nightly"));
+    productKey.addEventListener("input", validateKey);
 
-    // Initialize
-    switchTab('stable');
+    // Initial state
+    switchTab("stable");
   </script>
 </body>
 </html>
