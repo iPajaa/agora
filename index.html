@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Download Loader</title>
+  <title>agora.cc</title>
   <style>
     body {
       margin: 0;
@@ -65,8 +65,18 @@
       padding: 12px;
       border-radius: 10px;
       margin-bottom: 20px;
-      line-height: 1.4;
+      line-height: 1.5;
       display: none;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .info-box svg {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      flex-shrink: 0;
     }
 
     .info-box.stable {
@@ -143,10 +153,19 @@
     </div>
 
     <div class="info-box stable" id="stableInfo">
-      ✅ Stable release build<br>Thoroughly tested and recommended for most users.
+      <svg fill="#a4f4c4" viewBox="0 0 24 24"><path d="M20.285 6.708l-11.23 11.3-5.34-5.365 1.416-1.414 3.924 3.945 9.815-9.888z"/></svg>
+      <div>
+        Stable release build<br />
+        Thoroughly tested and recommended for most users.
+      </div>
     </div>
+
     <div class="info-box nightly" id="nightlyInfo">
-      ⚠️ Experimental build with latest features.<br>May be less stable than the stable version.
+      <svg fill="#e6cfff" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+      <div>
+        Experimental build with latest features.<br />
+        May be less stable than the stable version.
+      </div>
     </div>
 
     <input type="text" id="productKey" placeholder="Enter your product key" />
@@ -158,7 +177,7 @@
   </div>
 
   <script>
-    const validKey = "AGORA-AU9DB94FHHM-C6IT"; // Change to your actual key
+    const validKey = "AGORA-AU9DB94FHHM-C6IT"; // Replace with your actual key
 
     const tabStable = document.getElementById("tabStable");
     const tabNightly = document.getElementById("tabNightly");
@@ -174,8 +193,8 @@
       tabStable.classList.toggle("active", tab === "stable");
       tabNightly.classList.toggle("active", tab === "nightly");
 
-      stableInfo.style.display = tab === "stable" ? "block" : "none";
-      nightlyInfo.style.display = tab === "nightly" ? "block" : "none";
+      stableInfo.style.display = tab === "stable" ? "flex" : "none";
+      nightlyInfo.style.display = tab === "nightly" ? "flex" : "none";
 
       validateKey();
     }
@@ -204,7 +223,6 @@
     tabNightly.addEventListener("click", () => switchTab("nightly"));
     productKey.addEventListener("input", validateKey);
 
-    // Initial state
     switchTab("stable");
   </script>
 </body>
